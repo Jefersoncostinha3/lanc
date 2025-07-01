@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonymity Chat: Liberdade, Privacidade, Conexão</title>
+    <link rel="icon" type="image/png" href="https://img.freepik.com/vetores-premium/icone-de-triangulo-de-alquimia-magica-contorno-icone-vetor-de-triangulo-de-alquimia-magica-para-web-design-isolado-em-fundo-branco_98396-45013.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==/" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #00bcd4; /* Azul claro/turquesa */
+            --secondary-color: #ff4081; /* Rosa vibrante */
+            --text-color: #ffffff; /* Branco */
+            --background-dark-rgba: rgba(0, 0, 0, 0.7); /* Escuro semi-transparente */
+            --background-light-alpha: rgba(26, 26, 26, 0.8); /* Mais claro semi-transparente */
+            --main-bg-color: #1a1a1a; /* Cor de fundo principal do conteúdo */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            background-color: black; /* Fallback */
+            background-image: url('https://gifdb.com/images/high/gfycat-network-background-7ceo8pg1xxgcqj90.webp');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Mantém o fundo fixo ao rolar */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 960px;
+            width: 90%;
+            margin: 30px auto;
+            background-color: var(--main-bg-color);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative; /* Para o pseudo-elemento de fundo */
+        }
+
+        /* Pseudo-elemento para clarear o fundo da div principal */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(42, 42, 42, 0.6); /* Cor mais clara com transparência */
+            z-index: 1;
+        }
+
+        .content-section {
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            z-index: 2; /* Garante que o conteúdo fique acima do pseudo-elemento */
+            background-color: rgba(0, 0, 0, 0.4); /* Fundo semi-transparente para o conteúdo */
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .content-section:last-of-type {
+            margin-bottom: 0;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            position: relative;
+            z-index: 2;
+        }
+
+        header img.logo {
+            width: 120px;
+            height: auto;
+            filter: drop-shadow(0 0 15px var(--primary-color));
+            transition: transform 0.3s ease;
+        }
+        header img.logo:hover {
+            transform: scale(1.05);
+        }
+
+        .hero-section {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5));
+            padding: 60px 40px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-section h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5em;
+            color: var(--primary-color);
+            text-shadow: 0 0 15px var(--primary-color);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-section p {
+            font-size: 1.3em;
+            color: #e0e0e0;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            font-size: 1.4em;
+            font-weight: bold;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(255, 64, 129, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #e03070;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 64, 129, 0.6);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2em;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+        }
+
+        .text-block p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-item {
+            background-color: rgba(26, 26, 26, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 255, 0, 0.1);
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 255, 0, 0.4);
+        }
+
+        .feature-item img.icon-img {
+            width: 60px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 8px var(--primary-color));
+        }
+
+        .feature-item i {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .feature-item h3 {
+            font-size: 1.5em;
+            color: var(--text-color);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .feature-item p {
+            font-size: 1em;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        .final-cta-section {
+            background-color: var(--main-bg-color);
+            padding: 60px 40px;
+            text-align: center;
+            border-top: 2px solid var(--secondary-color);
+            position: relative;
+            z-index: 2;
+        }
+
+        .final-cta-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            color: var(--secondary-color);
+            text-shadow: 0 0 15px var(--secondary-color);
+            margin-bottom: 25px;
+        }
+
+        .footer {
+            background-color: #0a0a0a;
+            color: #888888;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 0.9em;
+            border-top: 1px solid #333;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        .social-links a {
+            font-size: 1.5em;
+            margin: 0 10px;
+            color: #888888;
+            transition: color 0.3s ease;
+        }
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.5em;
+            }
+            .hero-section p {
+                font-size: 1.1em;
+            }
+            .section-title {
+                font-size: 1.8em;
+            }
+            .cta-button {
+                font-size: 1.2em;
+                padding: 15px 30px;
+            }
+            .content-section {
+                padding: 30px 20px;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr; /* Uma coluna em telas menores */
+            }
+            .final-cta-section h2 {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 0;
+                width: 100%;
+                margin: 0;
+            }
+            body {
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+            .hero-section h1 {
+                font-size: 2em;
+            }
+            .hero-section p {
+                font-size: 1em;
+            }
+            .cta-button {
+                font-size: 1em;
+                padding: 12px 25px;
+            }
+            .section-title {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <a href="https://the-new-world.onrender.com/" target="_blank">
+                <img src="https://img.freepik.com/vetores-premium/icone-de-triangulo-de-alquimia-magica-contorno-icone-vetor-de-triangulo-de-alquimia-magica-para-web-design-isolado-em-fundo-branco_98396-45013.jpg" alt="Anonymity Chat Logo" class="logo">
+            </a>
+        </header>
+
+        <section class="hero-section">
+            <h1>Sua Voz, Sem Limites. Sua Identidade, Sempre Segura.</h1>
+            <p>Descubra o Anonymity Chat, o refúgio digital onde a liberdade de expressão encontra a privacidade absoluta. Conecte-se, compartilhe e explore ideias sem medo de julgamento.</p>
+            <a href="https://the-new-world.onrender.com/index2.html" class="cta-button">ENTRE AGORA NO ANONYMITY CHAT</a>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Prepare-se para uma Nova Forma de Conexão</h2>
+            <p style="margin-bottom: 30px; color: #b0b0b0;">Seu folder digital ou imagem promocional pode ir aqui, destacando o ambiente do chat.</p>
+            <img src="[LINK_DA_IMAGEM_DO_BANNER.PNG/JPG]" alt="Anonymity Chat Preview" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+        </section>
+
+        <section class="content-section text-block">
+            <h2 class="section-title">Nosso Propósito: Liberdade e Privacidade Acima de Tudo</h2>
+            <p>Bem-vindo ao <strong>Anonymity Chat</strong>, um espaço dedicado à liberdade de expressão e à comunicação sem filtros.</p>
+            <p>Nossa missão é fornecer uma plataforma onde a privacidade é a base. Acreditamos que todos têm o direito de se expressar sem medo de julgamento ou exposição. Aqui, a identidade é secundária; o foco está nas ideias e no intercâmbio de pensamentos.</p>
+            <p>Criamos um ambiente onde você pode explorar novas perspectivas, compartilhar experiências e se conectar com pessoas de diferentes pontos de vista, tudo isso mantendo sua identidade em sigilo. Seja para discussões sérias, desabafos ou apenas para bater um papo descontraído, o Anonymity Chat é o seu refúgio.</p>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Recursos Chave do Anonymity Chat</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <img src="https://img.freepik.com/vetores-premium/icone-de-triangulo-de-alquimia-magica-contorno-icone-vetor-de-triangulo-de-alquimia-magica-para-web-design-isolado-em-fundo-branco_98396-45013.jpg" alt="Ícone Conexão Mística" class="icon-img">
+                    <h3>Conexão Mística</h3>
+                    <p>Sua identidade é protegida. Converse e explore ideias sem rótulos ou julgamentos.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-comments"></i>
+                    <h3>Salas de Conversa Seguras</h3>
+                    <p>Crie ou junte-se a salas temáticas para discussões aprofundadas com total discrição.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-paperclip"></i>
+                    <h3>Compartilhamento de Mídia</h3>
+                    <p>Envie imagens e áudios para enriquecer suas conversas em tempo real e de forma segura.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Privacidade Reforçada</h3>
+                    <p>Tecnologia avançada para garantir que suas conversas permaneçam confidenciais.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="final-cta-section">
+            <h2>Pronto para se Conectar de Verdade?</h2>
+            <p style="font-size: 1.2em; color: #e0e0e0; margin-bottom: 30px;">Milhares de usuários já descobriram a liberdade do Anonymity Chat. Junte-se a eles agora mesmo!</p>
+            <a href="https://the-new-world.onrender.com/index2.html" class="cta-button">CRIE SUA CONTA GRÁTIS</a>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2025 Anonymity Chat. Todos os direitos reservados.</p>
+            <p class="social-links" style="margin-top: 15px;">
+                <a href="[LINK_SEU_INSTAGRAM]" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="[LINK_SEU_TWITTER]" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="[LINK_SEU_FACEBOOK]" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            </p>
+            <p style="margin-top: 10px;">
+                <a href="https://the-new-world.onrender.com/proposito.html" target="_blank">Nosso Propósito</a> |
+                <a href="https://the-new-world.onrender.com/" target="_blank">Página Inicial</a>
+            </p>
+        </footer>
+    </div>
+
+</body>
+</html>
