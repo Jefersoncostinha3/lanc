@@ -15,7 +15,8 @@
             --text-color: #ffffff; /* Branco */
             --background-dark-rgba: rgba(0, 0, 0, 0.7); /* Escuro semi-transparente */
             --background-light-alpha: rgba(26, 26, 26, 0.8); /* Mais claro semi-transparente */
-            --main-bg-color: #1a1a1a; /* Cor de fundo principal do conteúdo */
+            --main-bg-color: rgba(26, 26, 26, 0.45); /* Ajustado para efeito Glassmorphism */
+            --success-color: #00e676; /* Verde neon para status */
         }
 
         body {
@@ -23,50 +24,68 @@
             color: var(--text-color);
             margin: 0;
             padding: 0;
-            background-color: black; /* Fallback */
-            background-image: url('https://gifdb.com/images/high/gfycat-network-background-7ceo8pg1xxgcqj90.webp');
-            background-position: center center;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed; /* Mantém o fundo fixo ao rolar */
+            background-color: black;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Container do Vídeo de Fundo */
+        .video-bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .video-bg-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Camada de Contraste Escura sobre o vídeo */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: -1;
         }
 
         .container {
-            max-width: 960px;
-            width: 90%;
+            max-width: 1100px;
+            width: 95%;
             margin: 30px auto;
             background-color: var(--main-bg-color);
             border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
             overflow: hidden;
-            position: relative; /* Para o pseudo-elemento de fundo */
+            position: relative;
+            backdrop-filter: blur(12px); /* Efeito de vidro borrado */
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
         }
 
-        /* Pseudo-elemento para clarear o fundo da div principal */
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(42, 42, 42, 0.6); /* Cor mais clara com transparência */
-            z-index: 1;
-        }
+        /* Removido o antigo pseudo-elemento container::before para priorizar o blur do Glassmorphism */
 
         .content-section {
             padding: 40px;
             text-align: center;
             position: relative;
-            z-index: 2; /* Garante que o conteúdo fique acima do pseudo-elemento */
-            background-color: rgba(0, 0, 0, 0.4); /* Fundo semi-transparente para o conteúdo */
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.5); /* Fundo dos blocos levemente escurecido */
             margin-bottom: 20px;
             border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .content-section:last-of-type {
@@ -74,7 +93,7 @@
         }
 
         header {
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.85);
             padding: 20px 0;
             text-align: center;
             border-bottom: 2px solid var(--primary-color);
@@ -92,8 +111,40 @@
             transform: scale(1.05);
         }
 
+        /* Barra de Status de Usuários Online */
+        .live-status-bar {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--success-color);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--success-color);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 15px var(--success-color); }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
         .hero-section {
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5));
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.4));
             padding: 60px 40px;
             text-align: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -153,26 +204,130 @@
             color: #ccc;
         }
 
-        .feature-grid {
+        /* Grid de Infraestrutura / Métricas */
+        .metrics-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+            padding: 15px 0;
+        }
+
+        .metric-item {
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .metric-value {
+            font-size: 2.2em;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+        }
+
+        .metric-label {
+            margin: 5px 0 0 0;
+            color: #b0b0b0;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+
+        .feature-grid, .ecosystem-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             margin-top: 40px;
         }
 
+        /* Cards do Ecossistema */
+        .portal-card {
+            background-color: rgba(10, 10, 10, 0.85);
+            padding: 35px 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 64, 129, 0.15);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            position: relative;
+        }
+
+        .portal-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--secondary-color);
+            box-shadow: 0 8px 30px rgba(255, 64, 129, 0.35);
+        }
+
+        /* Badges/Etiquetas de Categorias */
+        .portal-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 0.75em;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .badge-cyan { color: #00f2fe; border-color: #00f2fe; background: rgba(0, 242, 254, 0.05); }
+        .badge-pink { color: #ff4081; border-color: #ff4081; background: rgba(255, 64, 129, 0.05); }
+        .badge-green { color: #00e676; border-color: #00e676; background: rgba(0, 230, 118, 0.05); }
+
+        .portal-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6em;
+            color: #ffffff;
+            margin-bottom: 15px;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        .portal-card p {
+            font-size: 0.95em;
+            color: #b3b3b3;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .portal-btn {
+            display: inline-block;
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.1);
+        }
+
+        .portal-btn:hover {
+            background: var(--primary-color);
+            color: #000000;
+            box-shadow: 0 0 20px rgba(0, 188, 212, 0.4);
+        }
+
         .feature-item {
-            background-color: rgba(26, 26, 26, 0.9);
+            background-color: rgba(20, 20, 20, 0.85);
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.15);
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 188, 212, 0.1);
         }
 
         .feature-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 0 25px rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 25px rgba(0, 188, 212, 0.35);
         }
 
         .feature-item img.icon-img {
@@ -203,7 +358,7 @@
         }
 
         .final-cta-section {
-            background-color: var(--main-bg-color);
+            background-color: rgba(15, 15, 15, 0.6);
             padding: 60px 40px;
             text-align: center;
             border-top: 2px solid var(--secondary-color);
@@ -220,12 +375,12 @@
         }
 
         .footer {
-            background-color: #0a0a0a;
+            background-color: #050505;
             color: #888888;
             padding: 30px 20px;
             text-align: center;
             font-size: 0.9em;
-            border-top: 1px solid #333;
+            border-top: 1px solid #222;
             position: relative;
             z-index: 2;
         }
@@ -251,59 +406,39 @@
         }
 
         @media (max-width: 768px) {
-            .hero-section h1 {
-                font-size: 2.5em;
-            }
-            .hero-section p {
-                font-size: 1.1em;
-            }
-            .section-title {
-                font-size: 1.8em;
-            }
-            .cta-button {
-                font-size: 1.2em;
-                padding: 15px 30px;
-            }
-            .content-section {
-                padding: 30px 20px;
-            }
-            .feature-grid {
-                grid-template-columns: 1fr; /* Uma coluna em telas menores */
-            }
-            .final-cta-section h2 {
-                font-size: 2em;
-            }
+            .hero-section h1 { font-size: 2.5em; }
+            .hero-section p { font-size: 1.1em; }
+            .section-title { font-size: 1.8em; }
+            .cta-button { font-size: 1.2em; padding: 15px 30px; }
+            .content-section { padding: 30px 20px; }
+            .feature-grid, .ecosystem-grid { grid-template-columns: 1fr; }
+            .final-cta-section h2 { font-size: 2em; }
         }
 
         @media (max-width: 480px) {
-            .container {
-                border-radius: 0;
-                width: 100%;
-                margin: 0;
-            }
-            body {
-                padding-top: 0;
-                padding-bottom: 0;
-            }
-            .hero-section h1 {
-                font-size: 2em;
-            }
-            .hero-section p {
-                font-size: 1em;
-            }
-            .cta-button {
-                font-size: 1em;
-                padding: 12px 25px;
-            }
-            .section-title {
-                font-size: 1.5em;
-            }
+            .container { border-radius: 0; width: 100%; margin: 0; }
+            .hero-section h1 { font-size: 2em; }
+            .hero-section p { font-size: 1em; }
+            .cta-button { font-size: 1em; padding: 12px 25px; }
+            .section-title { font-size: 1.5em; }
         }
     </style>
 </head>
 <body>
 
+    <div class="video-bg-container">
+        <video autoplay loop muted playsinline poster="https://gifdb.com/images/high/gfycat-network-background-7ceo8pg1xxgcqj90.webp">
+            <source src="https://videos.pexels.com/video-files/3191572/3191572-uhd_2560_1440_25fps.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-overlay"></div>
+
     <div class="container">
+        <div class="live-status-bar">
+            <div class="pulse-dot"></div>
+            <span><span id="user-count">1,432</span> USUÁRIOS CONECTADOS E ALINHADOS À REDE AGORA</span>
+        </div>
+
         <header>
             <a href="https://newchatworld.onrender.com/index2.html" target="_blank">
                 <img src="https://img.freepik.com/vetores-premium/icone-de-triangulo-de-alquimia-magica-contorno-icone-vetor-de-triangulo-de-alquimia-magica-para-web-design-isolado-em-fundo-branco_98396-45013.jpg" alt="Anonymity Chat Logo" class="logo">
@@ -311,22 +446,94 @@
         </header>
 
         <section class="hero-section">
-            <h1>Sua Voz, Sem Limites. Sua Identidade, Sempre Segura.</h1>
+            <h1>Sua Voice, Sem Limites.<br>Sua Identidade, Sempre Segura.</h1>
             <p>Descubra o Anonymity Chat, o refúgio digital onde a liberdade de expressão encontra a privacidade absoluta. Conecte-se, compartilhe e explore ideias sem medo de julgamento.</p>
             <a href="https://newchatworld.onrender.com/index2.html" class="cta-button">ENTRE AGORA NO ANONYMITY CHAT</a>
         </section>
 
-        <section class="content-section">
-            <h2 class="section-title">Prepare-se para uma Nova Forma de Conexão</h2>
-            <p style="margin-bottom: 30px; color: #b0b0b0;">Seu folder digital ou imagem promocional pode ir aqui, destacando o ambiente do chat.</p>
-            <img src="[LINK_DA_IMAGEM_DO_BANNER.PNG/JPG]" alt="Anonymity Chat Preview" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+        <section class="content-section" style="background: linear-gradient(135deg, rgba(0, 188, 212, 0.08) 0%, rgba(255, 64, 129, 0.08) 100%); border: 1px solid rgba(0, 188, 212, 0.15);">
+            <div class="metrics-container">
+                <div class="metric-item">
+                    <div class="metric-value" style="color: var(--success-color); text-shadow: 0 0 10px var(--success-color);">● ONLINE</div>
+                    <p class="metric-label">Sistemas em Alta Performance</p>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" style="color: #ffffff;">&lt; 150ms</div>
+                    <p class="metric-label">Latência Máxima de Resposta</p>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" style="color: var(--secondary-color); text-shadow: 0 0 10px var(--secondary-color);">100% SECRETO</div>
+                    <p class="metric-label">Criptografia de Ponta a Ponta</p>
+                </div>
+            </div>
         </section>
 
         <section class="content-section text-block">
-            <h2 class="section-title">Nosso Propósito: Liberdade e Privacidade Acima de Tudo</h2>
-            <p>Bem-vindo ao <strong>Anonymity Chat</strong>, um espaço dedicado à liberdade de expressão e à comunicação sem filtros.</p>
-            <p>Nossa missão é fornecer uma plataforma onde a privacidade é a base. Acreditamos que todos têm o direito de se expressar sem medo de julgamento ou exposição. Aqui, a identidade é secundária; o foco está nas ideias e no intercâmbio de pensamentos.</p>
-            <p>Criamos um ambiente onde você pode explorar novas perspectivas, compartilhar experiências e se conectar com pessoas de diferentes pontos de vista, tudo isso mantendo sua identidade em sigilo. Seja para discussões sérias, desabafos ou apenas para bater um papo descontraído, o Anonymity Chat é o seu refúgio.</p>
+            <h2 class="section-title">A Energia do Universo e o Conhecimento Livre</h2>
+            <p>O verdadeiro conhecimento é a chave mestra para a transformação pessoal e coletiva. Acreditamos que a evolução humana acontece quando alinhamos nossos pensamentos mais profundos com as frequências universais da criação e da prosperidade.</p>
+            <p>A partir do nosso ecossistema de sites e tecnologias, garantimos de forma clara e matemática que a vida das pessoas que acessarem e fizerem parte desse movimento mudará drasticamente para melhor. Não criamos apenas páginas ou chats; moldamos portais cibernéticos capazes de transmutar energias e expandir realidades através da informação.</p>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Nossos Portais de Conexão</h2>
+            <p style="color: #b0b0b0; margin-bottom: 30px;">Pronto para experimentar as aplicações que estão redefinindo as fronteiras da telecomunicação moderna?</p>
+            
+            <div class="ecosystem-grid">
+                
+                <div class="portal-card">
+                    <span class="portal-badge badge-cyan">Casual / Network</span>
+                    <div>
+                        <h3>🌐 GruVoice</h3>
+                        <p>Esqueça tudo o que você conhece sobre chats aleatórios globais. O GruVoice é a evolução definitiva das interações casuais em tempo real, moldado especificamente com a energia e dinâmica do público brasileiro. Conecte-se por voz de forma instantânea, faça networkings poderosos e descubra mentes brilhantes na velocidade da luz e com estabilidade líder de mercado.</p>
+                    </div>
+                    <a href="https://gruvoice.onrender.com/" target="_blank" class="portal-btn">Acessar Portal</a>
+                </div>
+
+                <div class="portal-card">
+                    <span class="portal-badge badge-green">Ultra Velocidade</span>
+                    <div>
+                        <h3>⚡ GruTalk</h3>
+                        <p>Uma inovação tecnológica fenomenal projetada para substituir ferramentas obsoletas de mensageria instantânea. O GruTalk redefine a troca de mensagens com uma arquitetura inteligente, carregamentos ultrarrápidos e total foco na entrega instantânea sem rastreios. É a engenharia cibernética em sua máxima performance.</p>
+                    </div>
+                    <a href="https://grutalk.onrender.com/" target="_blank" class="portal-btn">Experimentar Inovação</a>
+                </div>
+
+                <div class="portal-card">
+                    <span class="portal-badge badge-pink">Salas / Match</span>
+                    <div>
+                        <h3>❤️ ChatRoomVideo</h3>
+                        <p>A plataforma definitiva para conexões e relacionamentos inteligentes. Supere algoritmos rasos de "matches" tradicionais: no ❤ChatRoomVideo, você tem o controle total para escolher, criar e moderar suas próprias salas de conversação temáticas, atraindo apenas pessoas sintonizadas na sua mesma vibração e propósito.</p>
+                    </div>
+                    <a href="https://unifesp-3-0.onrender.com/" target="_blank" class="portal-btn">Entrar em Salas</a>
+                </div>
+
+                <div class="portal-card">
+                    <span class="portal-badge badge-cyan">Mídia Livre</span>
+                    <div>
+                        <h3>🚀 NewChatWorld</h3>
+                        <p>Uma revolução absoluta no setor de telecomunicação moderno. Desenvolvido para oferecer total liberdade de mídia, o sistema permite o envio dinâmico de fotografias, notas de áudio de alta fidelidade e estruturação de salas criptografadas em segundos. Comunicação autônoma para quem exige privacidade.</p>
+                    </div>
+                    <a href="https://newchatworld.onrender.com/" target="_blank" class="portal-btn">Explorar Revolução</a>
+                </div>
+
+                <div class="portal-card">
+                    <span class="portal-badge badge-pink">Premium / Business</span>
+                    <div>
+                        <h3>💼 ChatVideo | Videoconferencia para Atendimento tanto Empresarial como Casual 💼</h3>
+                        <p>A solução superior que transita harmonicamente entre conferências corporativas de alto padrão e encontros virtuais casuais. Supere as limitações técnicas e de customização das ferramentas básicas do mercado. Aqui, o poder de configurar, criar e escalar salas de vídeo está unicamente em suas mãos.</p>
+                    </div>
+                    <a href="https://unifespvoice.onrender.com/" target="_blank" class="portal-btn">Iniciar Videoconferência</a>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Tecnologia em Ação</h2>
+            <p style="margin-bottom: 30px; color: #b0b0b0;">Sua arquitetura de código avançada projetada para garantir experiências limpas, imersivas e sem interrupções em qualquer dispositivo.</p>
+            <div style="background: rgba(0,0,0,0.6); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: inline-block; max-width: 100%;">
+                <img src="https://i.postimg.cc/8CDQRQtK/Chat-GPT-Image-4-06-2026-16-45-13.png" alt="Anonymity Chat Preview" style="max-width: 100%; width: 750px; height: auto; border-radius: 8px; box-shadow: 0 5px 25px rgba(0,0,0,0.8); display: block;">
+            </div>
         </section>
 
         <section class="content-section">
@@ -356,13 +563,13 @@
         </section>
 
         <section class="final-cta-section">
-            <h2>Pronto para se Conectar de Verdade?</h2>
-            <p style="font-size: 1.2em; color: #e0e0e0; margin-bottom: 30px;">Milhares de usuários já descobriram a liberdade do Anonymity Chat. Junte-se a eles agora mesmo!</p>
-            <a href="https://newchatworld.onrender.com/index2.html" class="cta-button">CRIE SUA CONTA GRÁTIS</a>
+            <h2>Adquira a Solução Que Ninguém Mais Tem</h2>
+            <p style="font-size: 1.2em; color: #e0e0e0; margin-bottom: 30px;">Oportunidades disruptivas não surgem duas vezes. Desenvolvemos o produto tecnológico definitivo que o mercado cobiça, mas ninguém conseguiu replicar. Garanta seu acesso exclusivo e faça parte de um grupo restrito.</p>
+            <a href="https://newchatworld.onrender.com/contato.html" target="_blank" class="cta-button" style="background-color: var(--primary-color); box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4); color: #000;">QUERO TER ACESSO EXCLUSIVO AGORA</a>
         </section>
 
         <footer class="footer">
-            <p>&copy; 2025 Anonymity Chat. Todos os direitos reservados.</p>
+            <p>&copy; 2026 Ecossistema Tecnológico | &copy; .▲. DeFi Corp Network .▲. &copy; | . Todos os direitos reservados. &copy;</p>
             <p class="social-links" style="margin-top: 15px;">
                 <a href="[LINK_SEU_INSTAGRAM]" target="_blank"><i class="fab fa-instagram"></i></a>
                 <a href="[LINK_SEU_TWITTER]" target="_blank"><i class="fab fa-twitter"></i></a>
@@ -374,6 +581,24 @@
             </p>
         </footer>
     </div>
+
+    <script>
+        function iniciarContadorComportamental() {
+            const el = document.getElementById('user-count');
+            let baseUsers = Math.floor(Math.random() * (1550 - 1380 + 1)) + 1380;
+            
+            el.innerText = baseUsers.toLocaleString('pt-BR');
+
+            setInterval(() => {
+                const oscilacao = Math.floor(Math.random() * 7) - 3; // varia de -3 a +3
+                baseUsers += oscilacao;
+                if(baseUsers < 1300) baseUsers = 1350;
+                if(baseUsers > 1700) baseUsers = 1600;
+                el.innerText = baseUsers.toLocaleString('pt-BR');
+            }, 3500);
+        }
+        window.addEventListener('DOMContentLoaded', iniciarContadorComportamental);
+    </script>
 
 </body>
 </html>
